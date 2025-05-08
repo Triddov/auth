@@ -1,7 +1,19 @@
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import dotenv from "dotenv"
 import { validationResult } from "express-validator"
 import User from "./models/User.js"
 import Role from "./models/Role.js"
+
+dotenv.config()
+
+
+const generateAccessToken = (id, roles) => {
+    const payload = {
+        id, roles
+    }
+    return jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "12h" })
+}
 
 class authController{
 
@@ -33,6 +45,20 @@ class authController{
 
     async login(req, res){
         try {
+            const { username, password } = req.body
+            const user = await User.findOne({username})
+            if (!user) {
+                return res.status(400).json({message: `User does not exists`})
+            }
+
+            const isPasswordValid = bcrypt.compareSync(password, user.password)
+            if (!user) {
+                return res.status(400).json({message: `Password is incorrect :( `})
+            }
+
+            const token = generateAccessToken(user._id, user.roles)
+
+            return res.json({token})
 
         } catch (err) {
             console.error(err)
@@ -42,9 +68,9 @@ class authController{
 
     async getUsers(req, res){
         try {
+            const users = await User.find()
 
-
-            res.json("it's works")
+            res.json(users)
 
         } catch (err) {
             console.error(err)
