@@ -77,7 +77,6 @@ class authController{
             res.status(400).json("Registration failed")
         }
     }
-
 }
 
 export default new authController()

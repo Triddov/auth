@@ -1,3 +1,2 @@
-
 npm ci
 npm start

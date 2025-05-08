@@ -11,7 +11,7 @@ const app = express()
 
 app.use(express.json())
 app.use('/api', authRouter)
- 
+
 
 const startApp = async () => {
     try{
@@ -21,12 +21,6 @@ const startApp = async () => {
     } catch (err) {
         console.error(err)
     }
-
 }
 
 startApp()
-
-
-
-
-
