@@ -1,0 +1,7 @@
+.idea/
+node_modules/
+.env
+
+initDB/init_decrypted.js
+initDB/init.js
+
